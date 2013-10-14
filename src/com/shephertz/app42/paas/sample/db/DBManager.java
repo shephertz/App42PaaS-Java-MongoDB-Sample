@@ -22,7 +22,8 @@ public class DBManager {
 		String dbName = Util.getDBName();
 		String dbUser = Util.getDBUser();
 		String password = Util.getDBPassword();
-		System.out.println(password+" "+dbUser+" "+dbIp+" "+port+" "+password);
+		System.out.println(password + " " + dbUser + " " + dbIp + " " + port
+				+ " " + password);
 		try {
 			mongoClient = new MongoClient(dbIp, port);
 			db = mongoClient.getDB(dbName);
@@ -51,6 +52,8 @@ public class DBManager {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			mongoClient.close();
 		}
 	}
 
@@ -62,14 +65,8 @@ public class DBManager {
 			DBObject dbO = dbCursor.next();
 			dbObjectsArray.add(dbO);
 		}
+		mongoClient.close();
 		System.out.println(dbObjectsArray);
 		return dbObjectsArray;
 	}
-
-	public void delete() {
-		System.out.println("---------------------------DBM-------------");
-		DBCollection table = db.getCollection("user");
-		table.drop();
-	}
-
 }
